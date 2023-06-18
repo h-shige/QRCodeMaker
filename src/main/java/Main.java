@@ -3,8 +3,10 @@ import counter.ResultCounter;
 import log.ErrorLog;
 import resourceloader.XlsxFileLoader;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
 
@@ -15,17 +17,22 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        printArgs(args);
+        Scanner sc = new Scanner(System.in);
 
-        // 読み込むファイル
-        final String xlsxFilePath = args[0];
-        // QRコードの保存先
-        final String imgFolderPath = args[1];
+        // 読み込むファイルの相対パス
+        final String relativeXlsxFilePath = "./src/main/resources/input-data/QRコード作成データ.xlsx";
+        // 読み込むファイルの絶対パス
+        final String xlsxFilePath = new File(relativeXlsxFilePath).getAbsolutePath();
+        // QRコードの保存先の相対パス
+        final String relativeImgFolderPath = "./src/main/resources/img";
+        // QRコードの保存先の絶対パス
+        final String imgFolderPath = new File(relativeImgFolderPath).getAbsolutePath();
 
         XlsxFileLoader xlsxFileLoader = new XlsxFileLoader(xlsxFilePath);
         try {
             //ファイルを読み込んでその情報を格納したQRCodeクラスのリストを作成
             List<QRCode> qrCodeList = xlsxFileLoader.createQRCodeList(imgFolderPath);
+
             System.out.println("データ件数 : " + qrCodeList.size());
             printLine();
             //QRコード画像作成数
@@ -56,13 +63,4 @@ public class Main {
         System.out.println("-------------------------------------------------------------------------------------");
     }
 
-    /**
-     * 引数のパスを画面表示するメソッド
-     * @param args メインメソッドの引数で受け取った文字列の配列
-     */
-    private static void printArgs(final String[] args) {
-        System.out.println();
-        System.out.println("メールテンプレートファイル : " + args[0]);
-        System.out.println("QRコード保存フォルダ : " + args[1]);
-    }
 }

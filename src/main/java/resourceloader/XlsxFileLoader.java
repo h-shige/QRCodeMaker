@@ -18,7 +18,7 @@ public class XlsxFileLoader {
     /**
      * 作成したQRコードの保存先のパスにつける
      */
-    private static final char FOLDER = '\\';
+    private static final char FOLDER = '/';
 
     /**
      * xlsxファイルのパス
@@ -45,7 +45,7 @@ public class XlsxFileLoader {
         //returnするメールクラスのリスト
         List<QRCode> QRcodeList = new ArrayList<>();
         Workbook excel = WorkbookFactory.create(new File(this.inputPath));
-        Sheet sheet = excel.getSheet("メールテンプレート作成データ");
+        Sheet sheet = excel.getSheetAt(2);
 
         //行番号
         int rowNumber = 1;
@@ -53,14 +53,14 @@ public class XlsxFileLoader {
             Row row = sheet.getRow(rowNumber);
             //その行に値がない場合はループを抜ける。
             try {
-                row.getCell(7).getStringCellValue();
+                row.getCell(3).getStringCellValue();
             } catch (NullPointerException e) {
                 break;
             }
             //セルの値を一時保存するためのリスト
             List<String> cellValueList = new ArrayList<>();
             //列番号
-            int colNumber = 7;
+            int colNumber = 3;
             while (true) {
                 Cell cell = row.getCell(colNumber);
                 //その列に値がない場合は次の行へ

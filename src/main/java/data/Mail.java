@@ -49,4 +49,18 @@ public class Mail {
     public String getMessage() {
         return message;
     }
+
+    /**
+     * 自動生成した確認用toStringメソッド
+     * @return オブジェクトの中身
+     */
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Mail{");
+        sb.append("toMail='").append(toMail).append('\'');
+        sb.append(", subject='").append(subject).append('\'');
+        sb.append(", message='").append(message).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -47,8 +47,8 @@ class XlsxFileLoaderTest {
 
         @BeforeEach
         void setUp() {
-            filePath = "C:\\Users\\SNPC1054\\IdeaProjects\\QRCodeMaker\\test\\resource\\テスト用メールテンプレート作成データ.xlsx";
-            imgFolderPath = "C:\\Users\\SNPC1054\\IdeaProjects\\QRCodeMaker\\test\\resource\\img\\";
+            filePath = "/Users/yasu/playground/Java/QRCodeMaker/src/test/java/resource/テスト用メールテンプレート作成データ.xlsx";
+            imgFolderPath = "/Users/yasu/playground/Java/QRCodeMaker/src/test/java/resource/img//";
             xlsxFileLoader = new XlsxFileLoader(filePath);
         }
 

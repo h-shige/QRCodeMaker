@@ -109,4 +109,19 @@ public class QRCode {
     public Mail getMail() {
         return mail;
     }
+
+    /**
+     * 自動生成したtoStringメソッド
+     * @return オブジェクトの中身
+     */
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("QRCode{");
+        sb.append("mail=").append(mail);
+        sb.append(", fileName='").append(fileName).append('\'');
+        sb.append(", width=").append(width);
+        sb.append(", height=").append(height);
+        sb.append('}');
+        return sb.toString();
+    }
 }
