@@ -17,8 +17,6 @@ public class Main {
      */
     public static void main(String[] args) {
 
-        Scanner sc = new Scanner(System.in);
-
         // 読み込むファイルの相対パス
         final String relativeXlsxFilePath = "./src/main/resources/input-data/QRコード作成データ.xlsx";
         // 読み込むファイルの絶対パス
