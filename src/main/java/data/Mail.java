@@ -27,6 +27,14 @@ public class Mail {
     }
 
     /**
+     * QRコード作成用URL作成メソッド
+     * @return QRコード作成用URL
+     */
+    public String createURL() {
+        return "mailto:" + this.getToMail() + "?subject=" + this.getSubject() + "&body=" + this.getMessage();
+    }
+
+    /**
      * インスタンス変数宛先のgetter
      * @return 宛先
      */

@@ -10,7 +10,6 @@ public class ErrorLog {
 
     /**
      * エラーログ表示クラス
-     *
      * @param message エラーメッセージ
      */
     public ErrorLog(final String message) {
@@ -19,7 +18,6 @@ public class ErrorLog {
 
     /**
      * 文字列の文字を赤にするメソッド
-     *
      * @param message 色を付与する文字列
      * @return 色が付与された文字列
      */

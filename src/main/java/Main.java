@@ -6,7 +6,6 @@ import resourceloader.XlsxFileLoader;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Scanner;
 
 public class Main {
 
@@ -47,7 +46,7 @@ public class Main {
                 }
             }
             printLine();
-            resultCounter.printResult(qrCodeList.size());
+            resultCounter.printResult();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

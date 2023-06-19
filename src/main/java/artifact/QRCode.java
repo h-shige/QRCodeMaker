@@ -58,12 +58,11 @@ public class QRCode {
 
     /**
      * QRコード出力メソッド
-     *
      * @throws WriterException
      * @throws IOException     QRコードの画像ファイルが出力できない場合の例外
      */
     public void writeImage() throws WriterException, IOException {
-        String url = createURL(this.mail);
+        String url = this.mail.createURL();
         BufferedImage qrImage = createQRImage(url);
         File qrFile = new File(this.fileName);
         ImageIO.write(qrImage, "jpg", qrFile);
@@ -71,7 +70,6 @@ public class QRCode {
 
     /**
      * QRコードの画像作成メソッド
-     *
      * @param url 作成するQRコードのURL
      * @return 作成したQRコードの画像データ(BufferedImageクラスのインスタンス)
      * @throws WriterException
@@ -89,16 +87,6 @@ public class QRCode {
             }
         }
         return qrImage;
-    }
-
-    /**
-     * QRコード作成用URL作成メソッド
-     *
-     * @param mail 宛先、件名、本文を持ったメールクラス
-     * @return QRコード作成用URL
-     */
-    String createURL(final Mail mail) {
-        return "mailto:" + mail.getToMail() + "?subject=" + mail.getSubject() + "&body=" + mail.getMessage();
     }
 
     /**

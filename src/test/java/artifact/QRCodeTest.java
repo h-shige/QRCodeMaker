@@ -79,7 +79,8 @@ class QRCodeTest {
     }
 
     @Nested
-    class 画像ファイル出力テスト {
+    @DisplayName("画像ファイル出力テスト")
+    class TestImageFileOutput {
         QRCode qrCode;
         Mail mail;
         String fileName;
@@ -90,23 +91,25 @@ class QRCodeTest {
         @BeforeEach
         void setUp() {
             mail = new Mail("toMail", "subject", "message");
-            fileName = "C:\\Users\\SNPC1054\\IdeaProjects\\QRCodeMaker\\test\\resource\\img\\test.jpg";
+            fileName = "/Users/yasu/playground/Java/QRCodeMaker/src/test/java/resource/img/test.jpg";
             width = 300;
             height = 300;
             qrCode = new QRCode(mail, fileName, width, height);
         }
 
         @Test
-        void writeImageメソッドの後画像が生成される() throws IOException, WriterException {
+        @DisplayName("writeImageメソッドの実行後画像が生成される")
+        void testImageGenerationAfterWriteImage() throws IOException, WriterException {
             //qrCode.writeImage()の前にフォルダが空であることを確認する必要がある
             qrCode.writeImage();
-            File directory = new File("C:\\Users\\SNPC1054\\IdeaProjects\\QRCodeMaker\\test\\resource\\img\\");
+            File directory = new File("/Users/yasu/playground/Java/QRCodeMaker/src/test/java/resource/img/");
             assertEquals(1, directory.listFiles().length);
         }
     }
 
     @Nested
-    class URL生成テスト {
+    @DisplayName("URL生成テスト")
+    class TestURLGeneration {
 
         QRCode qrCode;
         Mail mail;
@@ -118,19 +121,21 @@ class QRCodeTest {
         }
 
         @Test
-        void Mailクラスのインスタンスが下記コメントの状態であればURLが下記コメントの状態になる() {
+        @DisplayName("Mailクラスのインスタンスが下記コメントの状態であればURLが下記コメントの状態になる")
+        void testURLGenerationWithMailInstanceInGivenState() {
             /*
             Mailクラス
             "toMail", "subject", "message"
             URL
             mailto:toMail?subject=subject&body=message
              */
-            assertEquals("mailto:toMail?subject=subject&body=message", qrCode.createURL(mail));
+            assertEquals("mailto:toMail?subject=subject&body=message", qrCode.getMail().createURL());
         }
     }
 
     @Nested
-    class 画像データ生成テスト {
+    @DisplayName("画像データ生成テスト")
+    class TestImageGeneration {
         String url;
         Mail mail;
         QRCode qrCode;
@@ -149,7 +154,8 @@ class QRCodeTest {
         }
 
         @Test
-        void createQRImageメソッドを呼び出すとBufferedImageクラスyのインスタンスをを得られる() throws WriterException {
+        @DisplayName("createQRImageメソッドを呼び出すとBufferedImageクラスのインスタンスをを得られる")
+        void testCreateQRImageReturnsBufferedImageInstance() throws WriterException {
             assertTrue(qrCode.createQRImage(url) instanceof BufferedImage);
         }
     }
