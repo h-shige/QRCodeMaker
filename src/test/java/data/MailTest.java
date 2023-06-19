@@ -27,7 +27,7 @@ import java.io.IOException;
 class ResultPrinter implements TestWatcher {
 
     /** テスト結果の出力先 */
-    private static final String FILE_PATH = "/Users/yasu/playground/Java/QRCodeMaker/src/test/document/test-results.xlsx";
+    private static final String FILE_PATH = "/Users/yasu/playground/Java/QRCodeMaker/src/test/document/MailTest-results.xlsx";
 
     /** 成功時のメッセージ */
     private static final String SUCCESS = "成功";
