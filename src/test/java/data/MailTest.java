@@ -4,9 +4,39 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.extension.ExtensionContext;
+import org.junit.jupiter.api.extension.TestWatcher;
+
+/**
+ * テスト結果を画面に表示するための試験的内部クラス
+ * 将来的にテストを実行すればそれをエクセルファイルに書き込み自動的に
+ * 単体テスト実行結果のドキュメントを作成できるようにしたい
+ */
+class ResultPrinter implements TestWatcher {
+
+    private static final String SUCCESS = "成功";
+
+    private static final String FAILED = "　失敗";
+
+    @Override
+    public void testSuccessful(ExtensionContext context) {
+        String testName = context.getDisplayName();
+        System.out.println(testName + " : " + SUCCESS);
+    }
+
+    @Override
+    public void testFailed(ExtensionContext context, Throwable cause) {
+        String testName = context.getDisplayName();
+        System.out.println(testName + " : " + FAILED);
+    }
+}
+
+
+@ExtendWith(ResultPrinter.class)
 class MailTest {
 
     @Nested
