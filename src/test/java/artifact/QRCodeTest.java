@@ -3,6 +3,7 @@ package artifact;
 import com.google.zxing.WriterException;
 import data.Mail;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class QRCodeTest {
 
     @Nested
-    class インスタンス生成テスト {
+    @DisplayName("インスタンス生成テスト")
+    class TestInstanceCreation{
         Mail mail;
         String fileName;
         int width;
@@ -30,7 +32,8 @@ class QRCodeTest {
         }
 
         @Test
-        void 引数にnullが含まれている場合は例外をスローする() {
+        @DisplayName("引数にnullが含まれている場合は例外をスローする")
+        void testThrowExceptionOnNullArgument() {
             assertAll(
                     () -> assertThrows(IllegalArgumentException.class,
                             () -> new QRCode(null, fileName, width, height)),
@@ -42,28 +45,32 @@ class QRCodeTest {
         }
 
         @Test
-        void 引数のfileNameが空白文字のみだった場合は例外をスローする() {
+        @DisplayName("引数のfileNameが空白文字のみだった場合は例外をスローする")
+        void testThrowExceptionOnWhitespaceFileName() {
             fileName = "";
             assertThrows(IllegalArgumentException.class,
                     () -> new QRCode(mail, fileName, width, height));
         }
 
         @Test
-        void 引数のwidthが0以下の場合例外をスローする() {
+        @DisplayName("引数のwidthが0以下の場合例外をスローする")
+        void testThrowExceptionOnNonPositiveWidth() {
             width = 0;
             assertThrows(IllegalArgumentException.class,
                     () -> new QRCode(mail, fileName, width, height));
         }
 
         @Test
-        void 引数のheightが0以下の場合例外をスローする() {
+        @DisplayName("引数のheightが0以下の場合例外をスローする")
+        void testThrowExceptionOnNonPositiveHeight() {
             height = 0;
             assertThrows(IllegalArgumentException.class,
                     () -> new QRCode(mail, fileName, width, height));
         }
 
         @Test
-        void 引数にnullと空白文字が含まれておらずwidthとheightが0以上の場合は正常にインスタンスが生成される() {
+        @DisplayName("引数にnullと空白文字が含まれておらずwidthとheightが0以上の場合は正常にインスタンスが生成される")
+        void testInstanceCreationWithValidArguments() {
             height = 0;
             assertThrows(IllegalArgumentException.class,
                     () -> new QRCode(mail, fileName, width, height));

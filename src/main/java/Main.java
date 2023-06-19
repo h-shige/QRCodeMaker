@@ -12,7 +12,6 @@ public class Main {
 
     /**
      * メインメソッド
-     *
      * @param args args[0]が読み込むQRコードデータ　args[1]がQRコードが作成されるフォルダ
      */
     public static void main(String[] args) {

@@ -43,44 +43,30 @@ public class XlsxFileLoader {
      */
     public List<QRCode> createQRCodeList(final String imgFolderPath) throws IOException {
         //returnするメールクラスのリスト
-        List<QRCode> QRcodeList = new ArrayList<>();
+        List<QRCode> qrCodeList = new ArrayList<>();
         Workbook excel = WorkbookFactory.create(new File(this.inputPath));
+        //読み込むシート
         Sheet sheet = excel.getSheetAt(2);
 
-        //行番号
-        int rowNumber = 1;
-        while (true) {
+        for (int rowNumber = 1; sheet.getRow(rowNumber).getCell(3) != null
+                     && sheet.getRow(rowNumber).getCell(3).getCellType() != CellType.BLANK; rowNumber++) {
+            //読み込む行
             Row row = sheet.getRow(rowNumber);
-            //その行に値がない場合はループを抜ける。
-            try {
-                row.getCell(3).getStringCellValue();
-            } catch (NullPointerException e) {
-                break;
-            }
             //セルの値を一時保存するためのリスト
             List<String> cellValueList = new ArrayList<>();
-            //列番号
-            int colNumber = 3;
-            while (true) {
+
+            for (int colNumber = 3; row.getCell(colNumber) != null
+                    && row.getCell(colNumber).getCellType() != CellType.BLANK; colNumber++) {
+                //読み込む列
                 Cell cell = row.getCell(colNumber);
-                //その列に値がない場合は次の行へ
-                try {
-                    row.getCell(colNumber).getStringCellValue();
-                } catch (NullPointerException e) {
-                    break;
-                }
                 cellValueList.add(cell.getStringCellValue());
-                //次の列へ
-                colNumber++;
             }
             Mail mail = new Mail(cellValueList.get(0), cellValueList.get(1), cellValueList.get(2));
-            QRCode qrCode = new QRCode(mail, imgFolderPath + FOLDER + cellValueList.get(3), Integer.parseInt(cellValueList.get(4)),
-                    Integer.parseInt(cellValueList.get(5)));
-            QRcodeList.add(qrCode);
-            //次の行へ
-            rowNumber++;
+           QRCode qrCode = new QRCode(mail, imgFolderPath + FOLDER + cellValueList.get(3),
+                   Integer.parseInt(cellValueList.get(4)), Integer.parseInt(cellValueList.get(5)));
+           qrCodeList.add(qrCode);
         }
         excel.close();
-        return Collections.unmodifiableList(QRcodeList);
+        return Collections.unmodifiableList(qrCodeList);
     }
 }
