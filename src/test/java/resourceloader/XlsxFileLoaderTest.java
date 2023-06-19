@@ -2,6 +2,7 @@ package resourceloader;
 
 import artifact.QRCode;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -12,23 +13,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class XlsxFileLoaderTest {
     @Nested
-    class インスタンス生成テスト {
+    @DisplayName("インスタンス生成テスト")
+    class TestInstanceCreation{
         String inputPath;
 
         @Test
-        void 引数がnullの場合は例外をスローする() {
+        @DisplayName("引数がnullの場合は例外をスローする")
+        void testThrowExceptionOnNullArgument() {
             inputPath = null;
             assertThrows(IllegalArgumentException.class, () -> new XlsxFileLoader(inputPath));
         }
 
         @Test
-        void 引数が空文字の場合は例外をスローする() {
+        @DisplayName("引数が空文字の場合は例外をスローする")
+        void testThrowExceptionOnEmptyStringArgument() {
             inputPath = "";
             assertThrows(IllegalArgumentException.class, () -> new XlsxFileLoader(inputPath));
         }
 
         @Test
-        void 引数がnullではないかつ空文字ではない場合は正常にインスタンスが生成される() {
+        @DisplayName("引数がnullではないかつ空文字ではない場合は正常にインスタンスが生成される")
+        void testInstanceCreationWithNonEmptyArguments() {
             inputPath = "inputPath";
             try {
                 new XlsxFileLoader(inputPath);
@@ -39,7 +44,8 @@ class XlsxFileLoaderTest {
     }
 
     @Nested
-    class ファイル読み込みテスト {
+    @DisplayName("ファイル読み込みテスト")
+    class testFileReading {
         String filePath;
 
         String imgFolderPath;
@@ -47,24 +53,25 @@ class XlsxFileLoaderTest {
 
         @BeforeEach
         void setUp() {
-            filePath = "/Users/yasu/playground/Java/QRCodeMaker/src/test/java/resource/テスト用メールテンプレート作成データ.xlsx";
+            filePath = "/Users/yasu/playground/Java/QRCodeMaker/src/test/java/resource/input-data/テスト用QRコード作成データ.xlsx";
             imgFolderPath = "/Users/yasu/playground/Java/QRCodeMaker/src/test/java/resource/img//";
             xlsxFileLoader = new XlsxFileLoader(filePath);
         }
 
         @Test
-        void レコードが2行存在する場合はsizeが2のQRCodeクラスのリストを作成しメールクラスの情報がファイルの情報と一致する() throws IOException {
+        @DisplayName("レコードが2行存在する場合はsizeが2のQRCodeクラスのリストを作成しメールクラスの情報がファイルの情報と一致する")
+        void testCreateQRCodeListWithTwoRecordsAndMatchFileInformation() throws IOException {
             /*
             ファイルの情報とリストのMailクラスの情報が一致しているかどうかは、
             件名が一致しているかどうかで判断する
-            Mail{subject='【0147-01】稲田太郎01 遅刻連絡'}
-            Mail{subject='【0147-01】稲田太郎01 欠席連絡'}
+            Mail{subject='〇〇アンケート 回答 参加者01 '}
+            Mail{subject='〇〇アンケート 回答 参加者02 '}
              */
             List<QRCode> qrCodeList = xlsxFileLoader.createQRCodeList(imgFolderPath);
             assertAll(
                     () -> assertEquals(2, qrCodeList.size()),
-                    () -> assertEquals("【0147-01】稲田太郎01 遅刻連絡", qrCodeList.get(0).getMail().getSubject()),
-                    () -> assertEquals("【0147-01】稲田太郎01 欠席連絡", qrCodeList.get(1).getMail().getSubject())
+                    () -> assertEquals("〇〇アンケート 回答 参加者01 ", qrCodeList.get(0).getMail().getSubject()),
+                    () -> assertEquals("〇〇アンケート 回答 参加者02 ", qrCodeList.get(1).getMail().getSubject())
             );
         }
     }

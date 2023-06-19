@@ -23,6 +23,8 @@ public class Main {
         final String relativeImgFolderPath = "./src/main/resources/img";
         // QRコードの保存先の絶対パス
         final String imgFolderPath = new File(relativeImgFolderPath).getAbsolutePath();
+        System.out.println(xlsxFilePath);
+        System.out.println(imgFolderPath);
 
         XlsxFileLoader xlsxFileLoader = new XlsxFileLoader(xlsxFilePath);
         try {
