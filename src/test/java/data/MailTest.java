@@ -1,9 +1,6 @@
 package data;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -18,6 +15,7 @@ import org.junit.jupiter.api.extension.TestWatcher;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * テスト結果をエクセルファイルに出力するための試験的内部クラス
@@ -30,10 +28,10 @@ class ResultPrinter implements TestWatcher {
     private static final String FILE_PATH = "/Users/yasu/playground/Java/QRCodeMaker/src/test/document/MailTest-results.xlsx";
 
     /** 成功時のメッセージ */
-    private static final String SUCCESS = "成功";
+    private static final String SUCCESS = "○";
 
     /** 失敗時のメッセージ */
-    private static final String FAILED = "　失敗";
+    private static final String FAILED = "×";
 
     /** 結果を書き込むファイル */
     private Workbook workbook;
@@ -42,7 +40,7 @@ class ResultPrinter implements TestWatcher {
     private Sheet sheet;
 
     /** 行数 */
-    private int rowCount;
+    private int rowNumber;
 
     /**
      * テスト成功時にテスト名と成功した結果を取得するメソッド
@@ -72,7 +70,7 @@ class ResultPrinter implements TestWatcher {
      * @param displayName テスト名
      * @param result 結果
      */
-    private void writeResultToExcel(String displayName, String result) {
+    private void writeResultToExcel(final String displayName, final String result) {
         try {
             if (workbook == null) workbook = new XSSFWorkbook();
             if (sheet == null) createSheet();
@@ -90,21 +88,64 @@ class ResultPrinter implements TestWatcher {
      * @param displayName テスト名
      * @param result 結果
      */
-    private void writeResult(String displayName, String result) {
-        Row row = sheet.createRow(rowCount++);
+    private void writeResult(final String displayName, final String result) {
+        Row row = sheet.createRow(rowNumber++);
         Cell cellDisplayName = row.createCell(0);
         cellDisplayName.setCellValue(displayName);
         Cell cellStatus = row.createCell(1);
         cellStatus.setCellValue(result);
+        autSizeColumn();
     }
 
     /**
-     * 最初にテスト結果を書き込む前に列名をセルに書き込む
+     * ファイルにクラス名と実施日を書き込むクラス
+     * @param className
+     * @param date
+     * @param labelStyle
+     */
+    private void writeClassNameAndDate(final String className, final String date, final CellStyle labelStyle) {
+        Row row = sheet.createRow(rowNumber++);
+        Cell cellClassNameLabel = row.createCell(0);
+        cellClassNameLabel.setCellValue("クラス名");
+        cellClassNameLabel.setCellStyle(labelStyle);
+        Cell cellClassName = row.createCell(1);
+        cellClassName.setCellValue(className);
+        row = sheet.createRow(rowNumber++);
+        Cell cellDateLabel = row.createCell(0);
+        cellDateLabel.setCellValue("実施日");
+        cellDateLabel.setCellStyle(labelStyle);
+        Cell cellDate = row.createCell(1);
+        cellDate.setCellValue(date);
+        rowNumber++;
+    }
+
+    /**
+     * 列幅を自動調整するメソッド
+     */
+    private void autSizeColumn() {
+        sheet.autoSizeColumn(0);
+        sheet.autoSizeColumn(1);
+    }
+
+    /**
+     * 最初にテスト結果を書き込む前にシートを作成し
+     * クラス名、実施日、列名をセルに書き込む
      */
     private void createSheet() {
-        sheet = workbook.createSheet("results");
-        rowCount = 0;
-        writeResult("テスト名", "結果");
+        sheet = workbook.createSheet("単体テスト結果");
+        CellStyle labelStyle = workbook.createCellStyle();
+        labelStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        labelStyle.setFillForegroundColor(IndexedColors.GREEN.getIndex());
+        rowNumber = 0;
+        writeClassNameAndDate(Mail.class.getSimpleName(), String.valueOf(LocalDate.now()), labelStyle);
+
+        Row row = sheet.createRow(rowNumber++);
+        Cell cellTestName = row.createCell(0);
+        cellTestName.setCellValue("テスト名");
+        cellTestName.setCellStyle(labelStyle);
+        Cell cellResult = row.createCell(1);
+        cellResult.setCellValue("結果");
+        cellResult.setCellStyle(labelStyle);
     }
 }
 
